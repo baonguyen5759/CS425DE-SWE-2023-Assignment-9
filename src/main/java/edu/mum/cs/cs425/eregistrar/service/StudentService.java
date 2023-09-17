@@ -1,5 +1,6 @@
 package edu.mum.cs.cs425.eregistrar.service;
 
+import edu.mum.cs.cs425.eregistrar.exception.StudentExistedException;
 import edu.mum.cs.cs425.eregistrar.exception.StudentNotFoundException;
 import edu.mum.cs.cs425.eregistrar.model.Student;
 import edu.mum.cs.cs425.eregistrar.repository.StudentRepository;
@@ -31,12 +32,22 @@ public class StudentService {
     }
 
     public Student createStudent(Student student) {
-        return this.studentRepository.save(student);
-    }
+        String studentNumber = student.getStudentNumber();
+        Student newStudent = this.studentRepository.findByStudentNumber(studentNumber);
+        if (newStudent != null) {
+            throw new StudentExistedException(String.format("Student number [%s] is already existed.", studentNumber));
+        }
+
+        return this.studentRepository.save(student);    }
 
     public Student updateStudent(long id, Student newStudent) {
         return this.studentRepository.findById(id)
                 .map(student -> {
+                    String studentNumber = newStudent.getStudentNumber();
+                    Student oldStudent = this.studentRepository.findByStudentNumber(studentNumber);
+                    if (oldStudent != null && oldStudent.getStudentId() != id) {
+                        throw new StudentExistedException(String.format("Student number [%s] is already existed.", studentNumber));
+                    }
                     student.setStudentNumber(newStudent.getStudentNumber());
                     student.setFirstName(newStudent.getFirstName());
                     student.setLastName(newStudent.getLastName());

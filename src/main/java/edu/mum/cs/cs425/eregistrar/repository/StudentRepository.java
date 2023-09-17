@@ -7,5 +7,8 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByStudentNumberLikeOrFirstNameLikeIgnoreCaseOrMiddleNameLikeIgnoreCaseOrLastNameLikeIgnoreCase(String studentNumber, String firstName, String middleName, String lastName);
+
+    Student findByStudentNumber(String number);
+
 }
 

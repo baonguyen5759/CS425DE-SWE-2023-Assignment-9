@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="">
-    <meta name="author" content="O. Kalu">
     <link rel="icon" href="favicon.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -34,8 +32,8 @@
 
 <div class="container main-container student">
     <div class="row d-flex">
-        <div class="col-xl-12 p-t-10" style="background-color: azure">
-            <h4 class="mt-4 mb-3 text-uppercase text-center">.::: Students :::.</h4>
+        <div class="col-xl-12 p-t-10">
+            <h4 class="mt-4 mb-3 text-uppercase text-center">Students</h4>
         </div>
         <div class="col-xl-4">
             <div class="row">
@@ -55,7 +53,7 @@
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
                                 <label for="studentId" class="form-label">Student Id</label>
-                                <label id="studentId"></label>
+                                <input type="text" class="form-control" id="studentId" disabled />
                             </div>
                         </div>
                     </div>
@@ -133,23 +131,22 @@
             <div class="row">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">First name</th>
-                            <th scope="col">Middle name</th>
-                            <th scope="col">Last name</th>
-                            <th scope="col">CGPA</th>
-                            <th scope="col">Date Of Enrollment</th>
-                            <th scope="col">International</th>
-                            <th scope="col"></th>
-                        </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Middle name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">CGPA</th>
+                        <th scope="col">Date Of Enrollment</th>
+                        <th scope="col">International</th>
+                        <th scope="col"></th>
+                    </tr>
                     </thead>
                     <tbody id="tableBody"></tbody>
                 </table>
             </div>
         </div>
     </div>
-    </section>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
@@ -165,9 +162,13 @@
         // Loop over them and prevent submission
         Array.from(forms).forEach(form => {
             form.addEventListener('submit', event => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                form.classList.add('was-validated');
+
                 if (form.checkValidity()) {
                     const studentId = $('#studentId').val();
-                    console.log("StudentId= " + studentId);
                     const studentNumber = $('#studentNumber').val();
                     const firstName = $('#firstName').val();
                     const lastName = $('#lastName').val();
@@ -179,7 +180,7 @@
                     cgpa = cgpa ? parseFloat(cgpa) : 0;
 
                     $.ajax({
-                        url: `/students/${studentId? `${studentId}` : ''}`,
+                        url: `/students/${studentId ? `${studentId}` : ''}`,
                         type: studentId ? 'PUT' : 'POST',
                         data: JSON.stringify({
                             studentNumber: studentNumber,
@@ -190,18 +191,19 @@
                             dateOfEnrollment: Date.parse(dateOfEnrollment),
                             isInternational: isInternational
                         }),
-                        contentType: 'application/json',
-                        success: () => {
-                            form.reset();
-                            reloadGrid();
+                        contentType: 'application/json'
+                    }).then(() => {
+                        form.classList.remove('was-validated');
+                        form.reset();
+                        setFormState(false);
+
+                        reloadGrid();
+                    }, err => {
+                        if (err && err.responseJSON && err.responseJSON.message) {
+                            alert(err.responseJSON.message);
                         }
                     });
-                } else {
-                    event.preventDefault();
-                    event.stopPropagation();
                 }
-
-                form.classList.add('was-validated');
             }, false);
 
             $('#search').change(e => {
@@ -246,7 +248,7 @@
                             <i class="bi bi-pencil-square icon" data-bs-toggle="tooltip" data-bs-placement="top"
                                 data-bs-title="Edit student ${studentNumber}" onclick="loadStudent(${studentId})"></i>
                             <i class="bi bi-x-circle icon" data-bs-toggle="tooltip" data-bs-placement="top"
-                                data-bs-title="Delete student ${studentNumber}" onclick="deleteStudent(${studentId}, '${studentNumber}', '${firstName}')"></i>
+                                data-bs-title="Delete student ${studentNumber}" onclick="deleteStudent(${studentId}, '${studentNumber}')"></i>
                         </td>
                     </tr>`);
                 });
@@ -264,7 +266,7 @@
             $('#btnCancel').show();
         } else {
             document.getElementById('mainForm').reset();
-            $('#studentId').text('');
+            $('#studentId').val('');
             $('#formTitle').text('New registration');
             $('#btnRegister').text('Register');
             $('#btnCancel').hide();
@@ -280,7 +282,7 @@
                 if (res) {
                     setFormState(true);
 
-                    $('#studentId').text(res.studentId);
+                    $('#studentId').val(res.studentId);
                     $('#studentNumber').val(res.studentNumber);
                     $('#firstName').val(res.firstName);
                     $('#lastName').val(res.lastName);
@@ -293,8 +295,8 @@
         });
     }
 
-    function deleteStudent(studentId, studentNumber, firstName) {
-        if (confirm(`Are you sure to delete Student ${studentNumber} (firstName: ${firstName})?`)) {
+    function deleteStudent(studentId, studentNumber) {
+        if (confirm(`Are you sure to delete Student ${studentNumber}?`)) {
             $.ajax({
                 url: `/students/${studentId}`,
                 type: 'DELETE',
