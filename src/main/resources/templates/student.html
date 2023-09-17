@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="O. Kalu">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/student.css}">
+    <title>eRegistrar</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary pd-5">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">eRegistrar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+                aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item" style="border-left: white 1px solid; padding-left: 2em; padding-right: 2em;">
+                    <a class="nav-link" href="/students">Students</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container main-container student">
+    <div class="row d-flex">
+        <div class="col-xl-12 p-t-10" style="background-color: azure">
+            <h4 class="mt-4 mb-3 text-uppercase text-center">.::: Students :::.</h4>
+        </div>
+        <div class="col-xl-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 id="formTitle">New Register</h5>
+                </div>
+            </div>
+            <div class="row">
+                <form id="mainForm" class="row g-3 needs-validation" novalidate>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label for="studentNumber" class="form-label">Student number</label>
+                                <input type="text" class="form-control" id="studentNumber" placeholder="001-01-0001" required />
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="form-outline">
+                                <label for="studentId" class="form-label">Student Id</label>
+                                <label id="studentId"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <div class="form-outline">
+                                <label for="firstName" class="form-label">First name</label>
+                                <input type="text" class="form-control" id="firstName" placeholder="David" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="form-outline">
+                                <label for="middleName" class="form-label">Middle name</label>
+                                <input type="text" class="form-control" id="middleName" placeholder="Liner" />
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-4">
+                            <div class="form-outline">
+                                <label for="firstName" class="form-label">Last name</label>
+                                <input type="text" class="form-control" id="lastName" placeholder="Scott" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 mb-4">
+                            <div class="form-outline">
+                                <label for="cgpa" class="form-label">CGPA</label>
+                                <input type="number" class="form-control" id="cgpa" step="0.1" placeholder="3.5" />
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-4">
+                            <div class="form-outline">
+                                <label for="isInternational" class="form-label">International</label>
+                                <select class="form-select" id="isInternational" required>
+                                    <option value="true">Yes</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-outline">
+                                <label for="dateOfEnrollment" class="form-label">Date of Enrollment</label>
+                                <input id="dateOfEnrollment" placeholder="09/15/2023" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary ms-2" id="btnRegister">Register</button>
+                        <button type="button" class="btn btn-secondary ms-2" id="btnCancel" onclick="setFormState(false)">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h5>List</h5>
+                        </div>
+                        <div class="row g-3 align-items-center">
+                            <div class="col-auto">
+                                <label for="search" class="form-label">Search</label>
+                            </div>
+                            <div class="col-auto">
+                                <input type="text" class="form-control" id="search" placeholder="Type in anything..." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Middle name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">CGPA</th>
+                            <th scope="col">Date Of Enrollment</th>
+                            <th scope="col">International</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js"></script>
+<script>
+    (() => {
+        'use strict';
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation');
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (form.checkValidity()) {
+                    const studentId = $('#studentId').val();
+                    console.log("StudentId= " + studentId);
+                    const studentNumber = $('#studentNumber').val();
+                    const firstName = $('#firstName').val();
+                    const lastName = $('#lastName').val();
+                    const middleName = $('#middleName').val();
+                    const dateOfEnrollment = $('#dateOfEnrollment').val();
+                    const isInternational = $('#isInternational').val();
+
+                    let cgpa = $('#cgpa').val();
+                    cgpa = cgpa ? parseFloat(cgpa) : 0;
+
+                    $.ajax({
+                        url: `/students/${studentId? `${studentId}` : ''}`,
+                        type: studentId ? 'PUT' : 'POST',
+                        data: JSON.stringify({
+                            studentNumber: studentNumber,
+                            firstName: firstName,
+                            lastName: lastName,
+                            middleName: middleName,
+                            cgpa: cgpa,
+                            dateOfEnrollment: Date.parse(dateOfEnrollment),
+                            isInternational: isInternational
+                        }),
+                        contentType: 'application/json',
+                        success: () => {
+                            form.reset();
+                            reloadGrid();
+                        }
+                    });
+                } else {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+
+            $('#search').change(e => {
+                reloadGrid(e.target.value);
+            });
+        });
+
+        $('#studentNumber').mask('000-00-0000');
+
+        $('#dateOfEnrollment').datepicker({
+            uiLibrary: 'bootstrap5'
+        });
+
+        setFormState(false);
+        reloadGrid();
+    })();
+
+    function reloadGrid(keyword) {
+        $.get(`/students/list${keyword ? `?keyword=${keyword}` : ''}`).then(res => {
+            $('#tableBody').html('');
+
+            if (res) {
+                $(res).each((i, s) => {
+                    const studentId = s.studentId;
+                    const studentNumber = s.studentNumber;
+                    const firstName = s.firstName;
+                    const middleName = s.middleName;
+                    const lastName = s.lastName;
+                    const cgpa = s.cgpa ? s.cgpa : '';
+                    const dateOfEnrollment = new Date(s.dateOfEnrollment).toLocaleDateString();
+                    const isInternational = s.isInternational;
+
+                    $('#tableBody').append(`<tr>
+                        <td scope="row">${studentNumber}</td>
+                        <td>${firstName}</td>
+                        <td>${middleName}</td>
+                        <td>${lastName}</td>
+                        <td>${cgpa}</td>
+                        <td>${dateOfEnrollment}</td>
+                        <td>${isInternational}</td>
+                        <td>
+                            <i class="bi bi-pencil-square icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-title="Edit student ${studentNumber}" onclick="loadStudent(${studentId})"></i>
+                            <i class="bi bi-x-circle icon" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-title="Delete student ${studentNumber}" onclick="deleteStudent(${studentId}, '${studentNumber}', '${firstName}')"></i>
+                        </td>
+                    </tr>`);
+                });
+
+                const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+                const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+            }
+        });
+    }
+
+    function setFormState(isEditing) {
+        if (isEditing) {
+            $('#formTitle').text('Edit registration');
+            $('#btnRegister').text('Save');
+            $('#btnCancel').show();
+        } else {
+            document.getElementById('mainForm').reset();
+            $('#studentId').text('');
+            $('#formTitle').text('New registration');
+            $('#btnRegister').text('Register');
+            $('#btnCancel').hide();
+        }
+    }
+
+    function loadStudent(studentId) {
+        $.ajax({
+            url: `/students/${studentId}`,
+            type: 'GET',
+            contentType: 'application/json',
+            success: res => {
+                if (res) {
+                    setFormState(true);
+
+                    $('#studentId').text(res.studentId);
+                    $('#studentNumber').val(res.studentNumber);
+                    $('#firstName').val(res.firstName);
+                    $('#lastName').val(res.lastName);
+                    $('#middleName').val(res.middleName);
+                    $('#cgpa').val(res.cgpa);
+                    $('#dateOfEnrollment').val(new Date(res.dateOfEnrollment).toLocaleDateString());
+                    $(`#isInternational option[value='${res.isInternational}']`).prop('selected', true);
+                }
+            }
+        });
+    }
+
+    function deleteStudent(studentId, studentNumber, firstName) {
+        if (confirm(`Are you sure to delete Student ${studentNumber} (firstName: ${firstName})?`)) {
+            $.ajax({
+                url: `/students/${studentId}`,
+                type: 'DELETE',
+                contentType: 'application/json',
+                success: () => {
+                    reloadGrid();
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>
