@@ -33,12 +33,12 @@
 <div class="container main-container student">
     <div class="row d-flex">
         <div class="col-xl-12 p-t-10">
-            <h4 class="mt-4 mb-3 text-uppercase text-center">Students</h4>
+            <h4 class="mt-4 mb-3 text-uppercase text-center" style="color: blue; border-bottom: 1px solid blue">.::: Students :::.</h4>
         </div>
         <div class="col-xl-4">
             <div class="row">
                 <div class="col-md-12">
-                    <h5 id="formTitle">New Register</h5>
+                    <h5 id="formTitle" style="color: blue">Student Registration</h5>
                 </div>
             </div>
             <div class="row">
@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <div class="form-outline">
-                                <label for="studentNumber" class="form-label">Student number</label>
+                                <label for="studentNumber" class="form-label"><b>Student number</b></label>
                                 <input type="text" class="form-control" id="studentNumber" placeholder="001-01-0001" required />
                             </div>
                         </div>
@@ -62,19 +62,19 @@
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="firstName" class="form-label">First name</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="David" required />
+                                <input type="text" class="form-control" id="firstName" placeholder="First name" required />
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="middleName" class="form-label">Middle name</label>
-                                <input type="text" class="form-control" id="middleName" placeholder="Liner" />
+                                <input type="text" class="form-control" id="middleName" placeholder="Middle name" />
                             </div>
                         </div>
                         <div class="col-md-4 mb-4">
                             <div class="form-outline">
                                 <label for="firstName" class="form-label">Last name</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="Scott" required />
+                                <input type="text" class="form-control" id="lastName" placeholder="Last name" required />
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label for="dateOfEnrollment" class="form-label">Date of Enrollment</label>
+                                <label for="dateOfEnrollment" class="form-label">Enrollment date</label>
                                 <input id="dateOfEnrollment" placeholder="09/15/2023" required />
                             </div>
                         </div>
@@ -115,14 +115,14 @@
                 <div class="col-md-12">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5>List</h5>
+                            <h5 style="color: blue">List students</h5>
                         </div>
                         <div class="row g-3 align-items-center">
                             <div class="col-auto">
                                 <label for="search" class="form-label">Search</label>
                             </div>
                             <div class="col-auto">
-                                <input type="text" class="form-control" id="search" placeholder="Type in anything..." />
+                                <input type="text" class="form-control" id="search" placeholder="enter search keyword" />
                             </div>
                         </div>
                     </div>
@@ -137,7 +137,7 @@
                         <th scope="col">Middle name</th>
                         <th scope="col">Last name</th>
                         <th scope="col">CGPA</th>
-                        <th scope="col">Date Of Enrollment</th>
+                        <th scope="col">Enrollment date</th>
                         <th scope="col">International</th>
                         <th scope="col"></th>
                     </tr>
@@ -267,7 +267,7 @@
         } else {
             document.getElementById('mainForm').reset();
             $('#studentId').val('');
-            $('#formTitle').text('New registration');
+            $('#formTitle').text('Student Registration');
             $('#btnRegister').text('Register');
             $('#btnCancel').hide();
         }
